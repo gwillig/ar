@@ -57,9 +57,6 @@ function init() {
 	//6.Step: Add created renderer to created dom element
 	container.appendChild(renderer.domElement);
 
-	//7.Step: Add Orbit control to be able to move around in the scene
-	new OrbitControls(camera, renderer.domElement)
-
 	//7.Step: Add a AR Button
 	let options = {
 
