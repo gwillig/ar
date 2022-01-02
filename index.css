@@ -1,0 +1,32 @@
+body {
+    background-color: #bfe3dd;
+    color: #fff;
+    font-family: "Lato", sans-serif;
+  }
+
+#place-button{
+    position: absolute;
+    bottom: 6em;
+    left: calc(50% - 55px);
+}
+
+#spinnerLoader{
+    position: absolute;
+    bottom: 10em;
+    left: calc(50% - 20px);
+    display: none;
+}
+
+#stabilization {
+  background-image: url(./assets/stabilization.gif);
+  background-size: contain;
+  background-repeat: no-repeat;
+  width: 400px;
+  height: 400px;
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translate(-50%, 0);
+  z-index: 10;
+  display: none;
+}
