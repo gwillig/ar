@@ -40,9 +40,14 @@ export class GLTFObject extends THREE.Object3D {
 	  const model = gltf.scene;
 	  console.log("gltf",gltf)
 	  model.scale.set( scale.x,scale.y,scale.z );
-	  this.mixer = new THREE.AnimationMixer( model );
+	  //Check if there is an animation
+	  if (gltf.animations.length!==0){
+		  	  this.mixer = new THREE.AnimationMixer( model );
+
 	  this.mixer.clipAction( gltf.animations[ 0 ] ).play();
-	  mixers.push(this.mixer)
+	  mixers.push(this.mixer);
+	  }
+
       this.add(model);
     },
 	// called while loading is progressing

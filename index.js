@@ -2,12 +2,12 @@ import * as THREE from './build/three.module.js';
 import {ARButton} from './jsm/webxr/ARButton.js';
 import {OrbitControls} from './jsm/controls/OrbitControls.js';
 import { RoomEnvironment } from './jsm/environments/RoomEnvironment.js';
-import {Reticle, GLTFObject, onMouseMove} from './util.js'
+import {Reticle, GLTFObject, onMouseMove} from './util.js';
 
 
 // Global variables
-let camera, scene, renderer, controls,userAddedObjects
-let current_object = undefined
+let camera, scene, renderer, controls,userAddedObjects;
+let current_object = undefined;
 let controller;
 let reticle = undefined;
 let stabilized = false;
@@ -105,7 +105,7 @@ function resetMaterials(userAddedObjects){
 	*
 	* */
 	// Set current object to undefined
-	current_object = undefined
+	current_object = undefined;
 	//Reset color to original color
 	if(userAddedObjects.children){
 		for (let object of userAddedObjects.children) {
