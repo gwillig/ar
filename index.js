@@ -8,6 +8,7 @@ import {Reticle, GLTFObject, onMouseMove} from './util.js';
 // Global variables
 let camera, scene, renderer, controls,userAddedObjects;
 let current_object = undefined;
+let last_object = undefined;
 let controller;
 let reticle = undefined;
 let stabilized = false;
@@ -17,6 +18,8 @@ let removedObjectNoneAR = false
 let mixers = []
 const clock = new THREE.Clock();
 //// Variables for smartphone
+var evCache = new Array();
+var prevDiff = -1;
 let touchDown, touchX, touchY, deltaX, deltaY;
 ////  initialize variable to detect click on object
 const mouse = new THREE.Vector2();
@@ -135,6 +138,8 @@ function render(timestamp,frame) {
 		 object.traverseAncestors( a => {
         if (a.name == "RootNode") {
 			current_object = a
+			last_object = a
+
 			// a.material.color.set( "green");
 		}
     })
@@ -217,20 +222,28 @@ function render(timestamp,frame) {
 	renderer.render( scene, camera );
 
 }
-
+function scaleObject3D(){
+		debugger
+		const scaleFactor = parseFloat(document.querySelector("#scaleObject").value)
+		// var scaleFactor = deltaX*deltaX+deltaY*deltaY
+		// console.log("scaleFactor: ",scaleFactor)
+		last_object.scale.x *= scaleFactor
+		last_object.scale.y *= scaleFactor
+		last_object.scale.z *= scaleFactor
+}
 export async function addObject() {
 	/*
 	@description
 		Adds an object to the scene
 	 */
 	//1.Step: Get parameter to load object from html-select element
-	const selectMenu = document.querySelector("#selectMenu")
+	const selectMenu = document.querySelector("#selectObject")
 	const object_path = selectMenu.options[selectMenu.selectedIndex].getAttribute("data-path")
 	const object_scaleString = selectMenu.options[selectMenu.selectedIndex].getAttribute("data-scale")
 	const object_scale = JSON.parse(object_scaleString)
 	const object_name = selectMenu.name
 	//2.Step: Create a object
-	debugger
+
 	const mesh = new GLTFObject(object_path,object_scale,object_name,mixers)
 	console.log("mesh",mesh)
 	console.log("THREE",THREE)
@@ -249,22 +262,29 @@ export async function addObject() {
 	mesh.name = object_name
 	//4.Step: Add object to userAddedObjects
 	userAddedObjects.add(mesh);
+
+	//5.Step: Make the range visible for scaling
+	document.getElementById("scaleObjectDiv").style.display = "block";
 }
 
 
 
 //Add events listener=================
+
+document.querySelector("#scaleObject").addEventListener('change', scaleObject3D);
+
 window.addEventListener('resize', onWindowResize);
 //// Event listener for object movement
 window.addEventListener( 'mousemove', function(){onMouseMove(event,mouse,current_object)}, false );
 window.addEventListener('touchstart', function (event) {
-	debugger
+
 	mouse.x = +(event.targetTouches[0].pageX / window.innerWidth) * 2 +-1;
 
 	mouse.y = -(event.targetTouches[0].pageY / window.innerHeight) * 2 + 1;
 
 	touchX = event.touches[0].pageX;
 	touchY = event.touches[0].pageY;
+
 }, false);
 
 window.addEventListener('touchmove', function (e) {
@@ -273,8 +293,11 @@ window.addEventListener('touchmove', function (e) {
 	deltaY = e.touches[0].pageY - touchY;
 	touchX = e.touches[0].pageX;
 	touchY = e.touches[0].pageY;
+	var fingers = e.touches.length
 
-	if (current_object) {
+	//Distinct between pinch and touch
+	debugger
+	if (typeof current_object!= 'undefined') {
 		current_object.rotation.y += deltaX / 100;
 		current_object.rotation.x += deltaY / 100;
 

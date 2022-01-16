@@ -11,12 +11,12 @@ body {
     z-index: 1000;
 }
 
-#selectMenu {
+#selectObject {
     position: absolute;
     bottom: 6em;
-    left: calc(10% );
+    left: calc(50% - 130px );
     z-index: 1000;
-    width: 7em;
+    width: 120px;
 }
 
 #spinnerLoader{
@@ -38,4 +38,11 @@ body {
   transform: translate(-50%, 0);
   z-index: 10;
   display: none;
+}
+#scaleObjectDiv{
+    position: absolute;
+    top:2em;
+    color:black;
+    font-size: 1em;
+    display: none;
 }
